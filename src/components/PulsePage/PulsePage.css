@@ -1,0 +1,54 @@
+.pulsepage-wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: var(--bg-primary);
+}
+
+
+.pulsepage-nav-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pulsepage-nav-wrapper > h2 {
+    font-size: 48px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.pulsepage-nav {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.pulsepage-nav > button {
+    padding: 12px 16px;
+    color: var(--text-quaternary);
+    border-left: 2px solid transparent;
+    background-color: transparent;
+    text-align: left;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.pulsepage-nav > button:hover {
+    border-left-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.pulsepage-nav > button.active {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    border-left-color: var(--accent-primary);
+    pointer-events: none;
+}
+
+.pulsepage-content-wrapper {
+    height: 36vh;
+}

@@ -1,0 +1,341 @@
+.adminpage-wrapper {
+    max-width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminpage {
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.adminpageTextInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.adminpageTextInfo h2 {
+    font-size: 48px;
+}
+
+.adminpageTextInfo span {
+    color: #ff4d00;
+    border: 1px solid #ff4d00;
+    padding: 4px 16px;
+    font-weight: 700;
+}
+
+.adminpageConfig-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.adminpageConfigCard {
+    border: 1px solid var(--border-light);
+    padding: 24px;
+    width: 25%;
+}
+
+.adminpageConfigCard:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminpageConfigCard h5 {
+    font-size: 28px;
+}
+
+.adminpageConfigCard p {
+    color: #9ca3af;
+}
+
+.adminpageConfigDropdown>button {
+    background-color: rgba(255, 255, 255, 0);
+    color: #ff4d00;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.adminpageConfigDropdown>button:hover {
+    color: var(--text-secondary);
+    transition: 150ms;
+}
+
+.adminpageConfigDropdown>button>svg {
+    width: 24px;
+    height: 24px;
+}
+
+.adminpageQueue-wrapper {
+    border: 1px solid var(--border-light);
+    padding: 24px;
+}
+
+.adminpageQueue-wrapper h5 {
+    color: #9ca3af;
+    margin-bottom: 12px;
+}
+
+.adminpageEstablishment-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: scroll;
+    height: 18vh;
+}
+
+.adminpageEstablishmentCard {
+    border: 1px solid var(--border-light);
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.adminpageEstablishmentCard>a {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.adminpageEstablishmentCard button {
+    background: transparent;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+
+.adminpageEstablishmentCard>div {
+    display: flex;
+    gap: 10px;
+}
+.adminpage-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.adminpage-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--bg-overlay);
+    backdrop-filter: blur(2px);
+}
+
+.adminpage-modal-content {
+    background: var(--bg-primary);
+    padding: 32px;
+    border-radius: 8px;
+    width: 360px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.adminpage-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.adminpage-modal-actions .danger {
+    background: var(--danger);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.adminpage-modal-actions .secondary {
+    background: transparent;
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.adminpageConfigDropdown {
+    position: relative;
+}
+
+.adminpageConfigMenu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    z-index: 10;
+}
+
+.adminpageConfigMenu button {
+    background: var(--bg-primary);
+    padding: 10px 16px;
+    text-align: left;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.adminpageConfigMenu button:hover {
+    background: var(--bg-tertiary);
+}
+
+.adminpageConfigMenu button.active {
+    color: var(--accent-primary);
+}
+
+.adminpageTagsButtons-wrapper {
+    display: flex;
+    width: 100%;
+    height: 6vh;
+    border: 1px solid var(--border-secondary);
+    justify-content: space-between;
+    padding: 6px 0;
+}
+
+.adminpageTags-wrapper {
+    width: 70%;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-left: 10px;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.adminpage-tag {
+    background-color: var(--tag-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 6px;
+}
+
+.adminpage-tag>span {
+    font-family: Arial, serif;
+    color: var(--tag-text);
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 12px;
+}
+
+.adminpage-tag>button {
+    font-family: Arial, serif;
+    font-weight: 600;
+    font-size: 10px;
+    background-color: var(--accent-primary);
+    opacity: 0.4;
+    color: var(--text-primary-invert);
+    border-radius: 9999px;
+    padding: 2px 4px;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.adminpage-tag>button:hover {
+    opacity: 1;
+    transition: 150ms;
+}
+
+
+.adminpageAddTag {
+    position: relative;
+}
+
+.adminpageButtons-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    height: 100%;
+}
+
+.adminpageAddTag>button {
+    background-color: var(--accent-primary);
+    color: var(--text-primary-invert);
+    font-weight: 700;
+    padding: 2px 4px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.adminpageAddTag>button:hover {
+    background-color: var(--button-primary-bg);
+    color: var(--button-primary-text);
+    transition: 150ms;
+}
+
+
+.adminpageAddTagDropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 220px;
+    z-index: 20;
+}
+
+.adminpageAddTagDropdown input {
+    border: 1px solid var(--border-light);
+    padding: 6px 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.adminpageAddTagDropdown textarea {
+    border: 1px solid var(--border-light);
+    padding: 6px 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.adminpageAddTagDropdown button {
+    background: var(--accent-primary);
+    color: var(--text-primary-invert);
+    font-weight: 700;
+    padding: 6px;
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.adminpageAddTagDropdown button:hover {
+    background-color: var(--accent-primary-hover);
+    transition: 300ms;
+}
+
+.adminpageAddTagDropdown button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--accent-primary);
+}
+
+.adminpage-loading {
+    max-width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

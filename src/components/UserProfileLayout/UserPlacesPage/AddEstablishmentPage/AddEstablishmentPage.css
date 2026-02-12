@@ -1,0 +1,104 @@
+.addEstablishment-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.addEstablishment-wrapper {
+    background: var(--bg-primary);
+    width: 520px;
+    max-height: 85vh;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px var(--shadow-color);
+    animation: scaleIn 0.25s ease-out;
+    position: relative;
+}
+
+.addEstablishment-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.addEstablishment-wrapper input,
+.addEstablishment-wrapper textarea {
+    width: 95%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-secondary);
+    font-size: 14px;
+    outline: none;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.addEstablishment-wrapper input:focus,
+.addEstablishment-wrapper textarea:focus {
+    border-color: var(--accent-secondary);
+}
+
+.addEstablishment-wrapper textarea {
+    resize: none;
+    min-height: 90px;
+}
+
+.addEstablishment-wrapper input[type="file"] {
+    padding: 6px;
+}
+
+.addEstablishment-submit {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent-secondary);
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.addEstablishment-submit:hover {
+    background: var(--accent-secondary-hover);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.addEstablishment-closeButton {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-weight: 900;
+    color: var(--text-muted);
+    padding: 5px;
+}
+
+.addEstablishment-closeButton:hover {
+    color: var(--text-quaternary);
+}

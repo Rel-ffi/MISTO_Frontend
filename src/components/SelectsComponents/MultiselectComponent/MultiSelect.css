@@ -1,0 +1,64 @@
+.tags-wrapper {
+    position: relative;
+    color: var(--text-muted);
+}
+
+.tags-input {
+    min-height: 42px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-secondary);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    cursor: pointer;
+    font-size: 14px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.tags-input:hover {
+    border-color: var(--accent-secondary);
+}
+
+.tag-chip {
+    background: #ede9fe;
+    color: #5b21b6;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.tags-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    z-index: 50;
+}
+
+.tag-option {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.tag-option:hover {
+    background: var(--bg-tertiary);
+}
+
+.tag-option.selected {
+    background: var(--accent-primary);
+    color: white;
+    font-weight: 500;
+}

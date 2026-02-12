@@ -1,0 +1,67 @@
+.userplaces-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 20px;
+    background: var(--bg-primary);
+    width: 59vw;
+}
+
+.userplaces-buttons-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+.userplaces-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+    width: 40%;
+    padding: 24px 48px 24px 48px;
+    border: 1px dashed var(--border-primary);
+    transition: 300ms;
+    cursor: pointer;
+    background: var(--bg-primary);
+}
+
+.userplaces-button:hover {
+    border-color: var(--accent-primary);
+    transition: 300ms;
+}
+
+.userplaces-button>div {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(255, 77, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--accent-primary);
+    border-radius: 9999px;
+}
+
+[data-theme="dark"] .userplaces-button>div {
+    background-color: rgba(255, 107, 53, 0.1);
+}
+
+.userplaces-button>span {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.userplaces-button>p {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.userplacesnews-placesnews-wrapper {
+    width: 98%;
+}

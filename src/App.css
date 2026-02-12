@@ -1,0 +1,170 @@
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #FAFAFA;
+    --bg-tertiary: #f3f4f6;
+    --bg-quaternary: #e5e7eb;
+    --bg-overlay: rgba(0, 0, 0, 0.45);
+
+    --text-primary: #000000;
+    --text-primary-invert: white;
+    --text-secondary: #1A1A1A;
+    --text-tertiary: #374151;
+    --text-quaternary: #6b7280;
+    --text-muted: #9ca3af;
+    --text-on-image: #ffffff;
+
+    --accent-primary: #ff4d00;
+    --accent-primary-hover: #e04400;
+    --accent-secondary: #7c3aed;
+    --accent-secondary-hover: #6d28d9;
+
+    --border-primary: #e4e4e7;
+    --border-secondary: #e5e7eb;
+    --border-light: #d1d5db;
+
+    --rating-star: #ff4d00;
+    --rating-star-empty: #e5e7eb;
+
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --danger-dark: #b91c1c;
+    --success: #059669;
+    --success-light: #d1fae5;
+    --success-dark: #047857;
+    --warning: #f59e0b;
+
+    --button-primary-bg: #000000;
+    --button-primary-text: #ffffff;
+    --button-secondary-bg: #ffffff;
+    --button-secondary-text: #374151;
+
+    --tag-bg: #868788;
+    --tag-text: #ffffff;
+
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --gradient-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a1a1a1;
+
+    --image-placeholder: linear-gradient(135deg, #e5e7eb, #f9fafb);
+
+    --color-green: #059669;
+    --color-grey: #6b7280;
+    --color-orange: #ff4d00;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-light-grey: #868788;
+
+    --accent-transparent-05: rgba(255, 77, 0, 0.05);
+    --accent-transparent-10: rgba(255, 77, 0, 0.1);
+    --accent-transparent-30: rgba(255, 77, 0, 0.3);
+    --accent-transparent-40: rgba(255, 77, 0, 0.4);
+
+    --complaint-bg: #fee2e2;
+    --complaint-text: #dc2626;
+    --check-bg: #d1fae5;
+    --check-text: #059669;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #121212;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2d2d2d;
+    --bg-quaternary: #3d3d3d;
+    --bg-overlay: rgba(0, 0, 0, 0.7);
+
+    --text-primary: #ffffff;
+    --text-secondary: #f3f4f6;
+    --text-primary-invert: black;
+    --text-tertiary: #d1d5db;
+    --text-quaternary: #9ca3af;
+    --text-muted: #6b7280;
+    --text-on-image: #ffffff;
+
+    --accent-primary: #ff6b35;
+    --accent-primary-hover: #ff8b5c;
+    --accent-secondary: #8b5cf6;
+    --accent-secondary-hover: #7c3aed;
+
+    --border-primary: #444444;
+    --border-secondary: #555555;
+    --border-light: #666666;
+
+    --rating-star: #ff6b35;
+    --rating-star-empty: #555555;
+
+    --danger: #f87171;
+    --danger-light: rgba(248, 113, 113, 0.15);
+    --danger-dark: #dc2626;
+    --success: #10b981;
+    --success-light: rgba(16, 185, 129, 0.15);
+    --success-dark: #059669;
+    --warning: #fbbf24;
+
+    --button-primary-bg: #ffffff;
+    --button-primary-text: #121212;
+    --button-secondary-bg: #2d2d2d;
+    --button-secondary-text: #ffffff;
+
+    --tag-bg: #666666;
+    --tag-text: #ffffff;
+
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --gradient-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+
+    --scrollbar-track: #2d2d2d;
+    --scrollbar-thumb: #555555;
+    --scrollbar-thumb-hover: #666666;
+
+    --image-placeholder: linear-gradient(135deg, #3d3d3d, #2d2d2d);
+
+    --color-green: #10b981;
+    --color-grey: #9ca3af;
+    --color-orange: #ff6b35;
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-light-grey: #666666;
+
+    --accent-transparent-05: rgba(255, 107, 53, 0.05);
+    --accent-transparent-10: rgba(255, 107, 53, 0.1);
+    --accent-transparent-30: rgba(255, 107, 53, 0.3);
+    --accent-transparent-40: rgba(255, 107, 53, 0.4);
+
+    --complaint-bg: rgba(220, 38, 38, 0.15);
+    --complaint-text: #f87171;
+    --check-bg: rgba(16, 185, 129, 0.15);
+    --check-text: #10b981;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: "Playfair Display", serif;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+    transition: background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+*::selection {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+button, input, textarea, select, a {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}

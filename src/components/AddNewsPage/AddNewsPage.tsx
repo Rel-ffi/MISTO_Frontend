@@ -20,16 +20,38 @@ export const AddNewsPage = ({ onClose, establishmentId }: Props) => {
         paid: false,
     });
 
-    const handlerSubmit = async () => {
-        if (!newsType) {
-            alert("Select news type");
-            return;
-        }
+    const [errors, setErrors] = useState({
+        title: "",
+        content: "",
+        newsType: "",
+        images: "",
+    });
 
-        if (!form.title.trim() || !form.content.trim()) {
-            alert("Fill title and description");
-            return;
-        }
+    const validate = () => {
+        const newErrors = {
+            title: "",
+            content: "",
+            newsType: "",
+            images: "",
+        };
+
+        if (!newsType) newErrors.newsType = "Select news type";
+
+        if (!form.title.trim()) newErrors.title = "Title can't be empty";
+        else if (form.title.length > 20) newErrors.title = "Max 20 characters";
+
+        if (!form.content.trim()) newErrors.content = "Content can't be empty";
+        else if (form.content.length > 255) newErrors.content = "Max 255 characters";
+
+        if (images.length === 0) newErrors.images = "At least one image is required";
+
+        setErrors(newErrors);
+
+        return !Object.values(newErrors).some(Boolean);
+    };
+
+    const handlerSubmit = async () => {
+        if (!validate()) return;
 
         try {
             setLoading(true);
@@ -45,16 +67,14 @@ export const AddNewsPage = ({ onClose, establishmentId }: Props) => {
                             title: form.title,
                             content: form.content,
                             paid: form.paid,
-                            typeId: newsType.id,
+                            typeId: newsType!.id,
                         }),
                     ],
                     { type: "application/json" }
                 )
             );
 
-            images.forEach(file => {
-                formData.append("images", file);
-            });
+            images.forEach(file => formData.append("images", file));
 
             await authApi.addNewsToEstablishmentOwner(formData);
 
@@ -79,56 +99,59 @@ export const AddNewsPage = ({ onClose, establishmentId }: Props) => {
 
                 <h3 className="addNews-title">Add new</h3>
 
-                <input
-                    placeholder="Title"
-                    value={form.title}
-                    onChange={e =>
-                        setForm({ ...form, title: e.target.value })
-                    }
-                />
-
-                <textarea
-                    placeholder="Content"
-                    value={form.content}
-                    onChange={e =>
-                        setForm({ ...form, content: e.target.value })
-                    }
-                />
-
-                <SingleSelect
-                    placeholder="Select news type"
-                    loadItems={authApi.getAllNewsType}
-                    value={newsType}
-                    onChange={setNewsType}
-                />
-
+                <div className="form-group">
+                    <label>Title</label>
+                    <input
+                        placeholder="Title"
+                        value={form.title}
+                        onChange={e => setForm({ ...form, title: e.target.value })}
+                    />
+                    {errors.title && <p className="error">{errors.title}</p>}
+                </div>
+                <div className="form-group">
+                    <label>Content</label>
+                    <textarea
+                        placeholder="Content"
+                        value={form.content}
+                        onChange={e => setForm({ ...form, content: e.target.value })}
+                    />
+                    {errors.content && <p className="error">{errors.content}</p>}
+                </div>
+                <div className="form-group">
+                    <label>News Type</label>
+                    <SingleSelect
+                        placeholder="Select news type"
+                        loadItems={authApi.getAllNewsType}
+                        value={newsType}
+                        onChange={setNewsType}
+                    />
+                    {errors.newsType && <p className="error">{errors.newsType}</p>}
+                </div>
                 <label className="addNews-checkbox">
                     <input
                         type="checkbox"
                         checked={form.paid}
-                        onChange={e =>
-                            setForm({ ...form, paid: e.target.checked })
-                        }
+                        onChange={e => setForm({ ...form, paid: e.target.checked })}
                     />
                     Sponsored news
                 </label>
-
-                <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={e =>
-                        setImages(Array.from(e.target.files || []))
-                    }
-                />
-
+                <div className="form-group">
+                    <label>Images</label>
+                    <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={e => setImages(Array.from(e.target.files || []))}
+                    />
+                    {errors.images && <p className="error">{errors.images}</p>}
+                </div>
                 <div className="addNews-actions">
                     <button
                         onClick={handlerSubmit}
                         disabled={loading}
                         className="addNews-submit"
                     >
-                        {loading ? "Saving. . ." : "Create"}
+                        {loading ? "Saving..." : "Create"}
                     </button>
 
                     <button

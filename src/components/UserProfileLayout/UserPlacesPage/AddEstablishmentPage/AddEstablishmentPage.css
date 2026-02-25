@@ -12,7 +12,7 @@
 .addEstablishment-wrapper {
     background: var(--bg-primary);
     width: 520px;
-    max-height: 85vh;
+    max-height: 94vh;
     border-radius: 16px;
     padding: 24px;
     display: flex;
@@ -21,7 +21,6 @@
     overflow-y: auto;
     box-shadow: 0 20px 60px var(--shadow-color);
     animation: scaleIn 0.25s ease-out;
-    position: relative;
 }
 
 .addEstablishment-title {
@@ -31,9 +30,29 @@
     color: var(--text-primary);
 }
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
+}
+
+.form-group>label {
+    margin-left: 5px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.error-addes {
+    color: red;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+
 .addEstablishment-wrapper input,
 .addEstablishment-wrapper textarea {
-    width: 95%;
+    width: 100%;
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid var(--border-secondary);

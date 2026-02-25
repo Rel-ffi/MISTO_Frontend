@@ -32,7 +32,7 @@ export function LoginPage() {
             }
 
         } catch (err: any) {
-            setError(err.response?.data?.message || 'Login failed');
+            setError(err.response?.data?.details.details || 'Login failed');
         }
     };
 
@@ -47,22 +47,28 @@ export function LoginPage() {
                 </svg>
             </div>
             <form id="login-form" onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    value={email}
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input
-                    type="password"
-                    value={password}
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                <div>
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        value={email}
+                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
                 <button type="submit">Login</button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {error && <p style={{ color: 'red'}}>{error}</p>}
             </form>
             <NavLink to="/auth/register" onClick={() => setDocumentTitle("Register")}>Doesn't have account?</NavLink>
         </div>

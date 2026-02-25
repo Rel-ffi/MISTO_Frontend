@@ -1,5 +1,5 @@
 import "./PulsePage.css";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import type {NewsType} from "../../api/auth/types";
 import {authApi} from "../../api/auth/authApi";
 import PulseContentPage from "./PulseContentPage/PulseContentPage";
@@ -9,11 +9,24 @@ export const PulsePage = () => {
     const [newsType, setNewsType] = useState<NewsType[]>([]);
     const [content, setContent] = useState<NewsType | null>(null);
 
+    const newsTypeRef = useRef<NewsType[] | null>(null);
+
     useEffect(() => {
+        if (newsTypeRef.current) {
+            setNewsType(newsTypeRef.current);
+            return;
+        }
+
         const loadNewsType = async () => {
-            const res = await authApi.getAllNewsType();
-            setNewsType(res);
+            try {
+                const res = await authApi.getAllNewsType();
+                setNewsType(res);
+                newsTypeRef.current = res;
+            } catch (e) {
+                console.error("Failed to load news types", e);
+            }
         };
+
         loadNewsType();
     }, []);
 
@@ -26,6 +39,7 @@ export const PulsePage = () => {
 
                 <div className="pulsepage-nav">
                     <button
+                        type="button"
                         className={!content ? "active" : ""}
                         onClick={() => setContent(null)}
                     >
@@ -35,6 +49,7 @@ export const PulsePage = () => {
                     {newsType.map(type => (
                         <button
                             key={type.name}
+                            type="button"
                             className={content?.name === type.name ? "active" : ""}
                             onClick={() => setContent(type)}
                         >

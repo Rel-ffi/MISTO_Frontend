@@ -16,8 +16,8 @@ export const EstablishmentsSearchPage = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [tags, setTags] = useState<TagsEstablishment[]>([]);
 
-    const [filters, setFilters] = useState(() => ({
-        page: Number(searchParams.get("page")) || 0,
+    const [filters, setFilters] = useState({
+        page: (Number(searchParams.get("page")) || 1) - 1,
         size: 4,
         minRating: Number(searchParams.get("minRating")) || 0,
         minAverageCheck: Number(searchParams.get("minAverageCheck")) || 0,
@@ -25,32 +25,54 @@ export const EstablishmentsSearchPage = () => {
         tagIds: searchParams.get("tags")
             ? searchParams.get("tags")!.split(",").map(Number)
             : [],
-    }));
+    });
+
+    const [debouncedFilters, setDebouncedFilters] = useState({
+        minRating: filters.minRating,
+        minAverageCheck: filters.minAverageCheck,
+        searchQuery: filters.searchQuery,
+        tagIds: filters.tagIds,
+    });
 
     useEffect(() => {
         authApi.getAllTags().then(setTags);
     }, []);
 
     useEffect(() => {
-        setLoading(true);
+        const handler = setTimeout(() => {
+            setDebouncedFilters({
+                minRating: filters.minRating,
+                minAverageCheck: filters.minAverageCheck,
+                searchQuery: filters.searchQuery,
+                tagIds: filters.tagIds,
+            });
+            setFilters(prev => ({ ...prev, page: 0 }));
+        }, 800);
 
-        authApi.getEstablishments(filters)
+        return () => clearTimeout(handler);
+    }, [filters.minRating, filters.minAverageCheck, filters.searchQuery, filters.tagIds]);
+
+    useEffect(() => {
+        setLoading(true);
+        authApi.getEstablishments({
+            ...debouncedFilters,
+            page: filters.page,
+            size: filters.size,
+        })
             .then(res => {
                 setEstablishments(res.content);
-                setTotalPages(res.totalPages);
+                setTotalPages(res.page.totalPages);
             })
             .finally(() => setLoading(false));
-    }, [filters]);
+    }, [debouncedFilters, filters.page, filters.size]);
 
     useDocumentTitle("Search Page | Establishments");
 
     useEffect(() => {
         const params: Record<string, string> = {};
-
-        if (filters.page > 0) params.page = String(filters.page);
+        if (filters.page >= 0) params.page = String(filters.page + 1);
         if (filters.minRating > 0) params.minRating = String(filters.minRating);
-        if (filters.minAverageCheck > 0)
-            params.minAverageCheck = String(filters.minAverageCheck);
+        if (filters.minAverageCheck > 0) params.minAverageCheck = String(filters.minAverageCheck);
         if (filters.searchQuery) params.search = filters.searchQuery;
         if (filters.tagIds.length) params.tags = filters.tagIds.join(",");
 
@@ -59,9 +81,7 @@ export const EstablishmentsSearchPage = () => {
 
     useEffect(() => {
         document.body.style.overflow = filterModal ? "hidden" : "";
-        return () => {
-            document.body.style.overflow = "";
-        };
+        return () => { document.body.style.overflow = ""; };
     }, [filterModal]);
 
     const toggleTag = (id: number) => {
@@ -77,13 +97,15 @@ export const EstablishmentsSearchPage = () => {
     const resetFilters = () => {
         setFilters({
             page: 0,
-            size: 12,
+            size: 4,
             minRating: 0,
             minAverageCheck: 0,
             searchQuery: "",
             tagIds: [],
         });
     };
+
+    const currentPage = filters.page;
 
     return (
         <div className="establishmentPage-wrapper">
@@ -110,7 +132,7 @@ export const EstablishmentsSearchPage = () => {
                     </div>
 
                     <button onClick={() => setFilterModal(true)}>
-                        <svg data-loki-id="IRqSOFtRYAaD" xmlns="http://www.w3.org/2000/svg" width="24"
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
                              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M10 5H3"></path>
@@ -121,10 +143,12 @@ export const EstablishmentsSearchPage = () => {
                             <path d="M21 19h-5"></path>
                             <path d="M21 5h-7"></path>
                             <path d="M8 10v4"></path>
-                            <path d="M8 12H3"></path></svg>
+                            <path d="M8 12H3"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
+
             {filterModal && (
                 <div className="filterOverlay" onClick={() => setFilterModal(false)}>
                     <div className="filterModal" onClick={e => e.stopPropagation()}>
@@ -133,13 +157,7 @@ export const EstablishmentsSearchPage = () => {
                             type="text"
                             placeholder="Search by name..."
                             value={filters.searchQuery}
-                            onChange={e =>
-                                setFilters(prev => ({
-                                    ...prev,
-                                    searchQuery: e.target.value,
-                                    page: 0,
-                                }))
-                            }
+                            onChange={e => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
                         />
 
                         <label>Rating: {filters.minRating.toFixed(1)}</label>
@@ -149,13 +167,7 @@ export const EstablishmentsSearchPage = () => {
                             max={5}
                             step={0.1}
                             value={filters.minRating}
-                            onChange={e =>
-                                setFilters(prev => ({
-                                    ...prev,
-                                    minRating: Number(e.target.value),
-                                    page: 0,
-                                }))
-                            }
+                            onChange={e => setFilters(prev => ({ ...prev, minRating: Number(e.target.value) }))}
                         />
 
                         <label>Average check: {filters.minAverageCheck}</label>
@@ -165,13 +177,7 @@ export const EstablishmentsSearchPage = () => {
                             max={2000}
                             step={50}
                             value={filters.minAverageCheck}
-                            onChange={e =>
-                                setFilters(prev => ({
-                                    ...prev,
-                                    minAverageCheck: Number(e.target.value),
-                                    page: 0,
-                                }))
-                            }
+                            onChange={e => setFilters(prev => ({ ...prev, minAverageCheck: Number(e.target.value) }))}
                         />
 
                         <label>Tags</label>
@@ -179,9 +185,7 @@ export const EstablishmentsSearchPage = () => {
                             {tags.map(tag => (
                                 <div
                                     key={tag.id}
-                                    className={`filterTag ${
-                                        filters.tagIds.includes(tag.id) ? "active" : ""
-                                    }`}
+                                    className={`filterTag ${filters.tagIds.includes(tag.id) ? "active" : ""}`}
                                     onClick={() => toggleTag(tag.id)}
                                 >
                                     {tag.name}
@@ -191,12 +195,7 @@ export const EstablishmentsSearchPage = () => {
 
                         <div className="filterActions">
                             <button className="resetFiltersBtn" onClick={resetFilters}>Reset</button>
-                            <button
-                                className="applyFiltersBtn"
-                                onClick={() => setFilterModal(false)}
-                            >
-                                Apply
-                            </button>
+                            <button className="applyFiltersBtn" onClick={() => setFilterModal(false)}>Apply</button>
                         </div>
                     </div>
                 </div>
@@ -223,23 +222,19 @@ export const EstablishmentsSearchPage = () => {
 
             <div className="pagination">
                 <button
-                    disabled={filters.page === 0}
-                    onClick={() =>
-                        setFilters(prev => ({ ...prev, page: prev.page - 1 }))
-                    }
+                    disabled={currentPage <= 0}
+                    onClick={() => setFilters(prev => ({ ...prev, page: prev.page - 1 }))}
                 >
                     Prev
                 </button>
 
                 <span>
-                    Page {filters.page + 1} / {totalPages}
+                    Page {currentPage + 1} / {totalPages}
                 </span>
 
                 <button
-                    disabled={filters.page + 1 >= totalPages}
-                    onClick={() =>
-                        setFilters(prev => ({ ...prev, page: prev.page + 1 }))
-                    }
+                    disabled={currentPage >= totalPages - 1}
+                    onClick={() => setFilters(prev => ({ ...prev, page: prev.page + 1 }))}
                 >
                     Next
                 </button>

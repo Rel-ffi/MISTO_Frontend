@@ -39,6 +39,31 @@ export const OTPInput: React.FC<OTPInputProps> = ({
         }
     };
 
+    const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const pasteData = e.clipboardData
+            .getData("Text")
+            .trim()
+            .replace(/\D/g, "")
+            .slice(0, length)
+            .split("");
+
+        const newOtp = [...otp];
+        for (let i = 0; i < pasteData.length; i++) {
+            if (/^\d$/.test(pasteData[i])) {
+                newOtp[i] = pasteData[i];
+            }
+        }
+        setOtp(newOtp);
+        const nextEmptyIndex = newOtp.findIndex(d => d === "");
+        if (nextEmptyIndex !== -1) {
+            inputsRef.current[nextEmptyIndex]?.focus();
+        } else {
+            inputsRef.current[length - 1]?.focus();
+            onComplete(newOtp.join(""));
+        }
+    };
+
     return (
         <div className="otp-inputs">
             {otp.map((digit, index) => (
@@ -49,6 +74,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({
                     inputMode="numeric"
                     maxLength={1}
                     value={digit}
+                    onPaste={handlePaste}
                     onChange={e => handleChange(e.target.value, index)}
                     onKeyDown={e => handleKeyDown(e, index)}
                     className="otp-input"

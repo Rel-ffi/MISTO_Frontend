@@ -20,16 +20,46 @@ export const AddEstablishmentPage = ({ onClose }: Props) => {
 
     const [images, setImages] = useState<File[]>([]);
     const [selectedTags, setSelectedTags] = useState<TagsEstablishment[]>([]);
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    const validate = () => {
+        const newErrors: typeof errors = {};
+
+        if (!form.name.trim()) newErrors.name = "Name can't be empty";
+        else if (form.name.length > 30) newErrors.name = "Max 30 chars";
+
+        if (!form.address.trim()) newErrors.address = "Address can't be empty";
+        else if (form.address.length > 255) newErrors.address = "Max 255 chars";
+
+        const avg = Number(form.averageCheck);
+        if (form.averageCheck === "") newErrors.averageCheck = "Average check can't be empty";
+        else if (isNaN(avg) || avg < 0) newErrors.averageCheck = "Must be >= 0";
+
+        if (!form.phone.trim()) newErrors.phone = "Phone can't be empty";
+        else if (!/^\+?[0-9\- ]{7,20}$/.test(form.phone))
+            newErrors.phone = "Invalid phone";
+
+        if (!form.email.trim()) newErrors.email = "Email can't be empty";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+            newErrors.email = "Invalid email";
+
+        if (selectedTags.length === 0) newErrors.selectedTags = "Select at least one tag";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const onSubmit = async () => {
-        const formData = new FormData();
+        if (!validate()) return;
 
+        const formData = new FormData();
         formData.append(
             "data",
             new Blob(
                 [
                     JSON.stringify({
                         ...form,
+                        averageCheck: Number(form.averageCheck),
                         tagIds: selectedTags.map(t => t.id),
                     }),
                 ],
@@ -39,9 +69,13 @@ export const AddEstablishmentPage = ({ onClose }: Props) => {
 
         images.forEach(img => formData.append("images", img));
 
-        await authApi.createEstablishment(formData);
-        alert("Establishment created");
-        onClose();
+        try {
+            await authApi.createEstablishment(formData);
+            alert("Establishment created");
+            onClose();
+        } catch (err: any) {
+            alert(err.response?.data?.message || "Error creating establishment");
+        }
     };
 
     return (
@@ -51,58 +85,86 @@ export const AddEstablishmentPage = ({ onClose }: Props) => {
                 onClick={e => e.stopPropagation()}
             >
                 <div onClick={onClose} className="addEstablishment-closeButton">⨉</div>
-                <div className="addEstablishment-title">
-                    Add establishment
+                <div className="addEstablishment-title">Add establishment</div>
+                <div className="form-group">
+                    <label>Name</label>
+                    <input
+                        placeholder="Name"
+                        value={form.name}
+                        onChange={e => setForm({ ...form, name: e.target.value })}
+                    />
+                    {errors.name && <p className="error-addes">{errors.name}</p>}
                 </div>
 
-                <input placeholder="Name"
-                       onChange={e => setForm({ ...form, name: e.target.value })}
-                       id="name"
-                />
+                <div className="form-group">
+                    <label>Address</label>
+                    <input
+                        placeholder="Address"
+                        value={form.address}
+                        onChange={e => setForm({ ...form, address: e.target.value })}
+                    />
+                    {errors.address && <p className="error-addes">{errors.address}</p>}
+                </div>
 
-                <input placeholder="Address"
-                       onChange={e => setForm({ ...form, address: e.target.value })}
-                       id="address"
-                />
+                <div className="form-group">
+                    <label>Average Check</label>
+                    <input
+                        placeholder="Average Check"
+                        value={form.averageCheck}
+                        onChange={e => setForm({ ...form, averageCheck: e.target.value })}
+                    />
+                    {errors.averageCheck && <p className="error-addes">{errors.averageCheck}</p>}
+                </div>
+                <div className="form-group">
+                    <label>Phone</label>
+                    <input
+                        placeholder="Phone"
+                        value={form.phone}
+                        onChange={e => setForm({ ...form, phone: e.target.value })}
+                    />
+                    {errors.phone && <p className="error-addes">{errors.phone}</p>}
+                </div>
 
-                <input placeholder="Average Check"
-                       onChange={e => setForm({ ...form, averageCheck: e.target.value })}
-                       id="averageCheck"
-                />
+                <div className="form-group">
+                    <label>Email</label>
+                    <input
+                        placeholder="Email"
+                        value={form.email}
+                        onChange={e => setForm({ ...form, email: e.target.value })}
+                    />
+                    {errors.email && <p className="error-addes">{errors.email}</p>}
+                </div>
+                <div className="form-group">
+                    <label>Establishment Tags</label>
+                    <MultiSelect
+                        placeholder="Select tags"
+                        loadItems={authApi.getAllTags}
+                        selected={selectedTags}
+                        onChange={setSelectedTags}
+                    />
+                    {errors.selectedTags && <p className="error-addes">{errors.selectedTags}</p>}
+                </div>
 
-                <input placeholder="Phone"
-                       onChange={e => setForm({ ...form, phone: e.target.value })}
-                       id="phone"
-                />
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                        placeholder="Description"
+                        value={form.description}
+                        onChange={e => setForm({ ...form, description: e.target.value })}
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Images</label>
+                    <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={e =>
+                            setImages(Array.from(e.target.files || []))
+                        }
+                    />
+                </div>
 
-                <input placeholder="Email"
-                       onChange={e => setForm({ ...form, email: e.target.value })}
-                       id="email"
-                />
-
-                <MultiSelect
-                    placeholder="Select tags"
-                    loadItems={authApi.getAllTags}
-                    selected={selectedTags}
-                    onChange={setSelectedTags}
-                />
-
-
-                <textarea
-                    placeholder="Description"
-                    key="description"
-                    onChange={e => setForm({ ...form, description: e.target.value })}
-                />
-
-                <input
-                    type="file"
-                    key="file"
-                    multiple
-                    accept="image/*"
-                    onChange={e =>
-                        setImages(Array.from(e.target.files || []))
-                    }
-                />
 
                 <button className="addEstablishment-submit" onClick={onSubmit}>
                     Create

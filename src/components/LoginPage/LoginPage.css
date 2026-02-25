@@ -6,7 +6,21 @@
     gap: 14px;
 }
 
-#login-form>input {
+#login-form>div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+
+#login-form>div>label {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#login-form>div>input {
     width: 100%;
     height: 30px;
     padding: 5px;
@@ -16,8 +30,13 @@
     color: var(--text-primary);
 }
 
-#login-form>input:focus {
+#login-form>div>input:focus {
     border-color: var(--accent-primary);
+}
+
+#login-form>p {
+    color: red;
+    font-size: 14px;
 }
 
 .login-wrapper>form>button {
